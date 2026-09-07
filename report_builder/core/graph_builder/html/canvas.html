@@ -1,0 +1,29 @@
+<div class="gb-resize" id="resizer"></div>
+
+<!-- Canvas -->
+<div class="gb-canvas" id="canvas">
+  <div class="gb-status-bar">
+    <div class="gb-status-dot" id="status-dot"></div>
+    <span id="status-txt">Configurer et cliquer Construire</span>
+    <span style="margin-left:auto;display:flex;gap:6px;align-items:center;">
+      <span style="font-family:var(--fm);font-size:9px;color:var(--slate-400);" id="status-n"></span>
+      <button onclick="build()" style="
+        font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+        padding:4px 12px;border:none;background:var(--navy);
+        border-radius:4px;cursor:pointer;color:#fff;font-weight:600;transition:background .15s;
+        display:flex;align-items:center;gap:5px;">
+        <svg viewBox="0 0 16 16" width="10" height="10" fill="currentColor"><path d="M3 8l5-5 1.4 1.4L5.8 8l3.6 3.6L8 13z" transform="rotate(180,8,8)"/><path d="M6 4h7v2H6zm0 6h7v2H6z"/></svg>
+        Construire
+      </button>
+    </span>
+  </div>
+  <div class="gb-plot-area" id="plot-area">
+    <div class="gb-plot-empty" id="plot-empty">
+      <svg viewBox="0 0 24 24" width="64" height="64"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
+      <p>Sélectionner les axes et cliquer Construire</p>
+    </div>
+    <div id="gb-plot"></div>
+  </div>
+</div>
+
+<!-- Axes modal -->

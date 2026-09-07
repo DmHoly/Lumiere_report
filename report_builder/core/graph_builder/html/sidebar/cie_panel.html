@@ -1,0 +1,39 @@
+  <div id="panel-cie" style="display:none">
+    <div class="gb-section open" id="sec-cie">
+      <div class="gb-section-hdr" onclick="toggleSection('sec-cie')">
+        <svg viewBox="0 0 16 16" width="11" height="11"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2"/></svg>
+        Options CIE
+        <svg class="chevron" viewBox="0 0 16 16" width="11" height="11" style="margin-left:auto"><path d="M3 5l5 5 5-5"/></svg>
+      </div>
+      <div class="gb-section-body">
+        <div class="gb-row">
+          <label class="gb-label">Filtre wafer</label>
+          <div class="gb-select-wrap"><select class="gb-select" id="cie-wafer"><option value="">Tous</option></select></div>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Taille point</label>
+          <div class="gb-select-wrap">
+            <select class="gb-select" id="cie-size">
+              <option value="J">∝ J (densité courant)</option>
+              <option value="EQE">∝ EQE</option>
+              <option value="fixed">Fixe</option>
+            </select>
+          </div>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Trajectoires (lignes)</span>
+          <button class="gb-toggle" id="tog-traj" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Locus spectral</span>
+          <button class="gb-toggle on" id="tog-locus" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Planckian locus</span>
+          <button class="gb-toggle on" id="tog-planck" onclick="this.classList.toggle('on')"></button>
+        </div>
+      </div>
+    </div>
+  </div><!-- /panel-cie -->
+
+  <!-- FACET PANEL -->

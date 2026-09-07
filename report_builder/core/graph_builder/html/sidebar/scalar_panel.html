@@ -1,0 +1,410 @@
+  <div id="panel-scalar">
+
+    <!-- Chart type -->
+    <div class="gb-section open" id="sec-type">
+      <div class="gb-section-hdr" onclick="toggleSection('sec-type')">
+        <svg viewBox="0 0 16 16" width="11" height="11"><rect x="1" y="8" width="3" height="7"/><rect x="6" y="5" width="3" height="10"/><rect x="11" y="2" width="3" height="13"/></svg>
+        Type de graphique
+        <svg class="chevron" viewBox="0 0 16 16" width="11" height="11" style="margin-left:auto"><path d="M3 5l5 5 5-5"/></svg>
+      </div>
+      <div class="gb-section-body">
+        <div class="gb-chart-grid">
+          <div class="gb-ctype active" data-type="scatter" onclick="setChartType(this);_updateContextOpts();scheduleRebuild()">
+            <svg viewBox="0 0 16 16" width="14" height="14"><circle cx="4" cy="12" r="1.5"/><circle cx="8" cy="7" r="1.5"/><circle cx="12" cy="4" r="1.5"/><circle cx="6" cy="10" r="1.5"/></svg>Scatter
+          </div>
+          <div class="gb-ctype" data-type="line" onclick="setChartType(this);_updateContextOpts();scheduleRebuild()">
+            <svg viewBox="0 0 16 16" width="14" height="14"><polyline points="2,13 5,7 9,10 14,3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Line
+          </div>
+          <div class="gb-ctype" data-type="bar" onclick="setChartType(this);_updateContextOpts();scheduleRebuild()">
+            <svg viewBox="0 0 16 16" width="14" height="14"><rect x="2" y="6" width="3" height="9"/><rect x="6.5" y="3" width="3" height="12"/><rect x="11" y="8" width="3" height="7"/></svg>Bar
+          </div>
+          <div class="gb-ctype" data-type="histogram" onclick="setChartType(this);_updateContextOpts();scheduleRebuild()">
+            <svg viewBox="0 0 16 16" width="14" height="14"><rect x="1" y="5" width="4" height="10"/><rect x="6" y="2" width="4" height="13"/><rect x="11" y="7" width="4" height="8"/></svg>Histo
+          </div>
+          <div class="gb-ctype" data-type="box" onclick="setChartType(this);_updateContextOpts();scheduleRebuild()">
+            <svg viewBox="0 0 16 16" width="14" height="14"><rect x="4" y="5" width="8" height="7" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="2" x2="8" y2="5" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="12" x2="8" y2="15" stroke="currentColor" stroke-width="1.5"/></svg>Box
+          </div>
+          <div class="gb-ctype" data-type="violin" onclick="setChartType(this);_updateContextOpts();scheduleRebuild()">
+            <svg viewBox="0 0 16 16" width="14" height="14"><path d="M8 2c-2 0-3 2-3 5 0 1.5.5 3 1.5 3.5v1H5v2h6v-2H9.5v-1C10.5 10 11 8.5 11 7c0-3-1-5-3-5z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>Violin
+          </div>
+          <div class="gb-ctype" data-type="bubble" onclick="setChartType(this);_updateContextOpts();scheduleRebuild()">
+            <svg viewBox="0 0 16 16" width="14" height="14"><circle cx="5" cy="11" r="2"/><circle cx="10" cy="7" r="3"/><circle cx="13" cy="12" r="1.5"/></svg>Bubble
+          </div>
+          <div class="gb-ctype" data-type="kde2d" onclick="setChartType(this);_updateContextOpts();scheduleRebuild()">
+            <svg viewBox="0 0 16 16" width="14" height="14"><ellipse cx="6" cy="9" rx="4" ry="3" fill="rgba(200,50,50,.7)"/><ellipse cx="10" cy="6" rx="3" ry="2" fill="rgba(200,100,50,.5)"/><ellipse cx="6" cy="9" rx="2" ry="1.5" fill="rgba(255,200,100,.9)"/></svg>KDE 2D
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Axes -->
+    <div class="gb-section open" id="sec-axes">
+      <div class="gb-section-hdr" onclick="toggleSection('sec-axes')">
+        <svg viewBox="0 0 16 16" width="11" height="11"><line x1="2" y1="14" x2="2" y2="2" stroke="currentColor" stroke-width="1.5"/><line x1="2" y1="14" x2="14" y2="14" stroke="currentColor" stroke-width="1.5"/></svg>
+        Axes
+        <svg class="chevron" viewBox="0 0 16 16" width="11" height="11" style="margin-left:auto"><path d="M3 5l5 5 5-5"/></svg>
+      </div>
+      <div class="gb-section-body">
+        <div class="gb-row">
+          <label class="gb-label">X <span class="gb-badge gb-badge-s">scalaire</span></label>
+          <div class="gb-select-wrap"><select class="gb-select" id="s-x" onchange="scheduleRebuild()"></select></div>
+        </div>
+        <div class="gb-row" id="row-sy">
+          <label class="gb-label">Y <span class="gb-badge gb-badge-s">scalaire</span></label>
+          <div class="gb-select-wrap"><select class="gb-select" id="s-y" onchange="scheduleRebuild()"></select></div>
+        </div>
+        <!-- Hue / Couleur — détection auto catégoriel vs numérique -->
+        <div class="gb-row">
+          <label class="gb-label">Couleur / Hue
+            <span id="hue-badge" class="gb-badge gb-badge-s" style="display:none;">num → colorscale</span>
+            <span id="hue-badge-cat" class="gb-badge gb-badge-c" style="">cat → palette</span>
+          </label>
+          <div class="gb-select-wrap">
+            <select class="gb-select" id="s-c" onchange="onCColChange()">
+              <option value="">— aucune —</option>
+            </select>
+          </div>
+        </div>
+        <!-- Colorscale — visible seulement quand cCol est numérique -->
+        <div class="gb-row" id="row-cs" style="display:none;">
+          <label class="gb-label">Colorscale</label>
+          <div class="gb-select-wrap">
+            <select class="gb-select" id="s-cs" onchange="scheduleRebuild()">
+              <option value="Viridis">Viridis</option>
+              <option value="Inferno">Inferno</option>
+              <option value="Plasma">Plasma</option>
+              <option value="Magma">Magma</option>
+              <option value="Turbo">Turbo</option>
+              <option value="Hot">Hot</option>
+              <option value="YlOrRd">Yellow → Red</option>
+              <option value="RdYlBu">Red → Blue</option>
+              <option value="Spectral">Spectral</option>
+            </select>
+          </div>
+        </div>
+        <!-- Symbole -->
+        <div class="gb-row" id="row-sym">
+          <label class="gb-label">Symbole / Groupe <span class="gb-badge gb-badge-c">catégoriel</span></label>
+          <div style="display:flex;gap:6px;">
+            <div class="gb-select-wrap" style="flex:1">
+              <select class="gb-select" id="s-sym-col" onchange="onSymColChange()">
+                <option value="">— fixe —</option>
+              </select>
+            </div>
+            <div id="sym-picker-wrap" style="position:relative;">
+              <button id="sym-picker-btn" onclick="toggleSymPicker()"
+                style="height:28px;width:36px;border:1px solid var(--border);background:var(--slate-50);border-radius:4px;cursor:pointer;font-size:16px;">●</button>
+              <div id="sym-picker-dropdown" style="display:none;position:absolute;right:0;top:32px;z-index:200;
+                background:var(--surface);border:1px solid var(--border);border-radius:6px;
+                box-shadow:0 4px 16px rgba(10,36,99,.12);padding:8px;
+                grid-template-columns:repeat(5,1fr);gap:4px;width:160px;">
+              </div>
+            </div>
+          </div>
+          <div id="sym-var-legend" style="display:none;margin-top:6px;font-family:var(--fm);font-size:9px;color:var(--slate-400);"></div>
+        </div>
+        <!-- Taille -->
+        <div class="gb-row" id="row-sz">
+          <label class="gb-label">Taille <span class="gb-badge gb-badge-s">scalaire</span> — <span id="sz-val">8px fixe</span></label>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <div class="gb-select-wrap" style="flex:1">
+              <select class="gb-select" id="s-z" onchange="onSizeColChange();scheduleRebuild()">
+                <option value="">— fixe —</option>
+              </select>
+            </div>
+            <input type="range" class="gb-range" id="s-szfix" min="2" max="24" step="1" value="8" style="flex:1"
+              oninput="document.getElementById('sz-val').textContent=this.value+'px fixe';scheduleRebuild()">
+          </div>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Contour <span id="border-val">0.5</span>px</label>
+          <input type="range" class="gb-range" id="s-border" min="0" max="3" step="0.5" value="0.5"
+            oninput="document.getElementById('border-val').textContent=this.value+'px';scheduleRebuild()">
+        </div>
+      </div>
+    </div>
+
+    <!-- Options contextuelles -->
+    <div class="gb-section open" id="sec-opts">
+      <div class="gb-section-hdr" onclick="toggleSection('sec-opts')">
+        <svg viewBox="0 0 16 16" width="11" height="11"><circle cx="8" cy="8" r="2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+        Options
+        <svg class="chevron" viewBox="0 0 16 16" width="11" height="11" style="margin-left:auto"><path d="M3 5l5 5 5-5"/></svg>
+      </div>
+      <div class="gb-section-body">
+
+        <!-- Auto-rebuild toggle -->
+        <div class="gb-toggle-row" style="background:rgba(212,175,55,.08);border-radius:4px;padding:4px 6px;margin-bottom:2px;">
+          <span class="gb-toggle-lbl" style="font-weight:600;color:var(--navy);">⚡ Rebuild auto</span>
+          <button class="gb-toggle on" id="tog-auto" onclick="this.classList.toggle('on')"></button>
+        </div>
+
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Log X</span>
+          <button class="gb-toggle" id="tog-lx" onclick="this.classList.toggle('on');scheduleRebuild()"></button>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Log Y</span>
+          <button class="gb-toggle" id="tog-ly" onclick="this.classList.toggle('on');scheduleRebuild()"></button>
+        </div>
+        <div class="gb-toggle-row" id="row-trendline">
+          <span class="gb-toggle-lbl">Trendline OLS</span>
+          <button class="gb-toggle" id="tog-tl" onclick="this.classList.toggle('on');scheduleRebuild()"></button>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Crosshairs</span>
+          <button class="gb-toggle on" id="tog-ch" onclick="this.classList.toggle('on');scheduleRebuild()"></button>
+        </div>
+
+        <!-- Histogram: nbins -->
+        <div class="gb-row" id="row-nbins" style="display:none;">
+          <label class="gb-label">Bins — <span id="nbins-val">auto</span></label>
+          <input type="range" class="gb-range" id="s-nbins" min="0" max="80" step="5" value="0"
+            oninput="document.getElementById('nbins-val').textContent=this.value==0?'auto':this.value;scheduleRebuild()">
+        </div>
+
+        <!-- Box/Violin: points -->
+        <div class="gb-row" id="row-boxpts" style="display:none;">
+          <label class="gb-label">Points affichés</label>
+          <div class="gb-select-wrap">
+            <select class="gb-select" id="s-boxpts" onchange="scheduleRebuild()">
+              <option value="suspectedoutliers">Outliers suspects</option>
+              <option value="outliers">Tous outliers</option>
+              <option value="all">Tous les points</option>
+              <option value="false">Aucun</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Bar: barmode -->
+        <div class="gb-row" id="row-barmode" style="display:none;">
+          <label class="gb-label">Mode barres</label>
+          <div class="gb-select-wrap">
+            <select class="gb-select" id="s-barmode" onchange="scheduleRebuild()">
+              <option value="group">Groupées</option>
+              <option value="stack">Empilées</option>
+              <option value="overlay">Superposées</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="gb-row">
+          <label class="gb-label">Opacité — <span id="op-val">0.85</span></label>
+          <input type="range" class="gb-range" id="s-op" min="0.1" max="1" step="0.05" value="0.85"
+            oninput="document.getElementById('op-val').textContent=parseFloat(this.value).toFixed(2);scheduleRebuild()">
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Palette (discret)</label>
+          <div class="gb-select-wrap">
+            <select class="gb-select" id="s-pal" onchange="scheduleRebuild()">
+              <option value="aledia">Aledia</option>
+              <option value="D3">D3</option>
+              <option value="G10">G10</option>
+              <option value="T10">T10</option>
+            </select>
+          </div>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Titre</label>
+          <input class="gb-input" id="s-title" placeholder="Titre du graphique…" oninput="scheduleRebuild()">
+        </div>
+      </div>
+    </div>
+
+    <!-- Hover config -->
+    <div class="gb-section" id="sec-hover">
+      <div class="gb-section-hdr" onclick="toggleSection('sec-hover')">
+        <svg viewBox="0 0 16 16" width="11" height="11"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm1 10H7V7h2v4zm0-6H7V3h2v2z" fill="currentColor"/></svg>
+        Hover data
+        <svg class="chevron" viewBox="0 0 16 16" width="11" height="11" style="margin-left:auto"><path d="M3 5l5 5 5-5"/></svg>
+      </div>
+      <div class="gb-section-body">
+        <div class="gb-label" style="margin-bottom:4px;">Colonnes affichées au survol</div>
+        <div id="hover-cols-list" style="display:flex;flex-direction:column;gap:4px;max-height:160px;overflow-y:auto;"></div>
+        <button class="gb-add-filter" onclick="addHoverCol()" style="margin-top:6px;">+ Ajouter colonne hover</button>
+      </div>
+    </div>
+
+    <!-- KDE 2D options -->
+    <div class="gb-section open" id="sec-kde" style="display:none">
+      <div class="gb-section-hdr" onclick="toggleSection('sec-kde')">
+        <svg viewBox="0 0 16 16" width="11" height="11"><ellipse cx="8" cy="8" rx="6" ry="4" fill="none" stroke="currentColor" stroke-width="1.2"/><ellipse cx="8" cy="8" rx="3" ry="2" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+        Options KDE 2D
+        <svg class="chevron" viewBox="0 0 16 16" width="11" height="11" style="margin-left:auto"><path d="M3 5l5 5 5-5"/></svg>
+      </div>
+      <div class="gb-section-body">
+        <div class="gb-row">
+          <label class="gb-label">Colorscale KDE</label>
+          <div class="gb-select-wrap"><select class="gb-select" id="kde-cs">
+            <option value="Hot">Hot</option>
+            <option value="Inferno">Inferno</option>
+            <option value="Plasma">Plasma</option>
+            <option value="Viridis">Viridis</option>
+            <option value="YlOrRd">Yellow→Red</option>
+            <option value="Turbo">Turbo</option>
+          </select></div>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Résolution — <span id="kde-bins-val">40</span></label>
+          <input type="range" class="gb-range" id="kde-bins" min="10" max="80" step="5" value="40"
+            oninput="document.getElementById('kde-bins-val').textContent=this.value">
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Histogrammes marginaux</span>
+          <button class="gb-toggle on" id="tog-kde-marg" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Contours iso-densité</span>
+          <button class="gb-toggle on" id="tog-kde-cont" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Points scatter superposés</span>
+          <button class="gb-toggle" id="tog-kde-pts" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Fond noir</span>
+          <button class="gb-toggle on" id="tog-kde-dark" onclick="this.classList.toggle('on')"></button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /panel-scalar -->
+
+
+    <!-- Axes / Layout config — inline, remplace la modale -->
+    <div class="gb-section" id="sec-axes-cfg">
+      <div class="gb-section-hdr" onclick="toggleSection('sec-axes-cfg')">
+        <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="2" y1="14" x2="2" y2="2"/><line x1="2" y1="14" x2="14" y2="14"/><line x1="2" y1="8" x2="6" y2="8"/><line x1="8" y1="4" x2="8" y2="14"/></svg>
+        Axes &amp; layout
+        <svg class="chevron" viewBox="0 0 16 16" width="11" height="11" style="margin-left:auto"><path d="M3 5l5 5 5-5"/></svg>
+      </div>
+      <div class="gb-section-body">
+
+        <!-- Axe X -->
+        <div style="font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);padding-bottom:4px;border-bottom:1px solid var(--border);">Axe X</div>
+        <div class="gb-row">
+          <label class="gb-label">Titre X</label>
+          <input class="gb-input" id="ax-xtitle" placeholder="auto" oninput="scheduleApplyAxes()">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div class="gb-row">
+            <label class="gb-label">Min</label>
+            <input class="gb-input" id="ax-xmin" placeholder="auto" oninput="scheduleApplyAxes()">
+          </div>
+          <div class="gb-row">
+            <label class="gb-label">Max</label>
+            <input class="gb-input" id="ax-xmax" placeholder="auto" oninput="scheduleApplyAxes()">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div class="gb-row">
+            <label class="gb-label">Type</label>
+            <div class="gb-select-wrap"><select class="gb-select" id="ax-xtype" onchange="scheduleApplyAxes()">
+              <option value="auto">Auto</option>
+              <option value="linear">Linéaire</option>
+              <option value="log">Log</option>
+              <option value="date">Date</option>
+            </select></div>
+          </div>
+          <div class="gb-row">
+            <label class="gb-label">Tick interval</label>
+            <input class="gb-input" id="ax-xdtick" placeholder="auto" oninput="scheduleApplyAxes()">
+          </div>
+        </div>
+
+        <!-- Axe Y -->
+        <div style="font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);padding-bottom:4px;border-bottom:1px solid var(--border);margin-top:4px;">Axe Y</div>
+        <div class="gb-row">
+          <label class="gb-label">Titre Y</label>
+          <input class="gb-input" id="ax-ytitle" placeholder="auto" oninput="scheduleApplyAxes()">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div class="gb-row">
+            <label class="gb-label">Min</label>
+            <input class="gb-input" id="ax-ymin" placeholder="auto" oninput="scheduleApplyAxes()">
+          </div>
+          <div class="gb-row">
+            <label class="gb-label">Max</label>
+            <input class="gb-input" id="ax-ymax" placeholder="auto" oninput="scheduleApplyAxes()">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div class="gb-row">
+            <label class="gb-label">Type</label>
+            <div class="gb-select-wrap"><select class="gb-select" id="ax-ytype" onchange="scheduleApplyAxes()">
+              <option value="auto">Auto</option>
+              <option value="linear">Linéaire</option>
+              <option value="log">Log</option>
+            </select></div>
+          </div>
+          <div class="gb-row">
+            <label class="gb-label">Tick interval</label>
+            <input class="gb-input" id="ax-ydtick" placeholder="auto" oninput="scheduleApplyAxes()">
+          </div>
+        </div>
+
+        <!-- Global -->
+        <div style="font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);padding-bottom:4px;border-bottom:1px solid var(--border);margin-top:4px;">Global</div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Grille</span>
+          <button class="gb-toggle on" id="ax-grid" onclick="this.classList.toggle('on');scheduleApplyAxes()"></button>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Ratio 1:1</span>
+          <button class="gb-toggle" id="ax-equal" onclick="this.classList.toggle('on');scheduleApplyAxes()"></button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div class="gb-row">
+            <label class="gb-label">Bg plot</label>
+            <input type="color" id="ax-plotbg" value="#F8F9FD" style="height:28px;width:100%;border:1px solid var(--border);border-radius:4px;cursor:pointer;" oninput="scheduleApplyAxes()">
+          </div>
+          <div class="gb-row">
+            <label class="gb-label">Bg papier</label>
+            <input type="color" id="ax-paperbg" value="#ffffff" style="height:28px;width:100%;border:1px solid var(--border);border-radius:4px;cursor:pointer;" oninput="scheduleApplyAxes()">
+          </div>
+        </div>
+
+        <!-- Typo -->
+        <div style="font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);padding-bottom:4px;border-bottom:1px solid var(--border);margin-top:4px;">Typographie</div>
+        <div class="gb-row">
+          <label class="gb-label">Titre graph — <span id="ax-fs-title-val">13</span>px</label>
+          <input type="range" class="gb-range" id="ax-fs-title" min="8" max="28" step="1" value="13"
+            oninput="document.getElementById('ax-fs-title-val').textContent=this.value;scheduleApplyAxes()">
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Titre axes — <span id="ax-fs-axlabel-val">12</span>px</label>
+          <input type="range" class="gb-range" id="ax-fs-axlabel" min="6" max="24" step="1" value="12"
+            oninput="document.getElementById('ax-fs-axlabel-val').textContent=this.value;scheduleApplyAxes()">
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Tick labels — <span id="ax-fs-tick-val">10</span>px</label>
+          <input type="range" class="gb-range" id="ax-fs-tick" min="6" max="20" step="1" value="10"
+            oninput="document.getElementById('ax-fs-tick-val').textContent=this.value;scheduleApplyAxes()">
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Police</label>
+          <div class="gb-select-wrap">
+            <select class="gb-select" id="ax-font" onchange="scheduleApplyAxes()">
+              <option value="IBM Plex Mono,monospace">IBM Plex Mono</option>
+              <option value="Syne,sans-serif">Syne</option>
+              <option value="DM Sans,sans-serif">DM Sans</option>
+              <option value="Arial,sans-serif">Arial</option>
+            </select>
+          </div>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Légende — <span id="ax-fs-legend-val">10</span>px</label>
+          <input type="range" class="gb-range" id="ax-fs-legend" min="6" max="20" step="1" value="10"
+            oninput="document.getElementById('ax-fs-legend-val').textContent=this.value;scheduleApplyAxes()">
+        </div>
+
+        <button onclick="resetAxes()" style="
+          width:100%;padding:7px;border:1px solid var(--border);background:var(--slate-100);
+          border-radius:var(--radius);font-family:var(--fm);font-size:9px;cursor:pointer;
+          color:var(--slate-600);letter-spacing:.06em;margin-top:4px;">
+          ↺ Réinitialiser axes
+        </button>
+      </div>
+    </div>
+
+  <!-- VECTOR PANEL -->

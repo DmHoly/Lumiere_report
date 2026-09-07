@@ -1,0 +1,18 @@
+  <div class="gb-section open" id="sec-filt">
+    <div class="gb-section-hdr" onclick="toggleSection('sec-filt')">
+      <svg viewBox="0 0 16 16" width="11" height="11"><path d="M1 3h14M3 8h10M5 13h6"/></svg>
+      Filtres <span id="filt-badge" style="color:var(--gold);margin-left:4px;font-size:10px;"></span>
+      <svg class="chevron" viewBox="0 0 16 16" width="11" height="11" style="margin-left:auto"><path d="M3 5l5 5 5-5"/></svg>
+    </div>
+    <div class="gb-section-body">
+      <div id="filt-list"></div>
+      <button class="gb-add-filter" onclick="addFilter()">+ Ajouter un filtre</button>
+    </div>
+  </div>
+
+  <div class="gb-build-wrap">
+    <button class="gb-build-btn" onclick="build()">
+      <svg viewBox="0 0 16 16" width="12" height="12" fill="white"><path d="M6 3l8 5-8 5V3z"/></svg>
+      Construire
+    </button>
+  </div>

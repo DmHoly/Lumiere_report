@@ -1,0 +1,13 @@
+pandas>=1.5
+numpy>=1.23
+plotly>=5.0
+scipy>=1.9
+scikit-learn>=1.1
+pillow>=9.0
+
+# Optionnels — utilisés uniquement par certains blocs
+# psycopg2-binary   # VLCDesignBlock / vlc_data_loader — requête base GOZER
+# cryptography      # report_builder_runner — chiffrement optionnel des snapshots
+
+# Développement / tests
+pytest>=7.0

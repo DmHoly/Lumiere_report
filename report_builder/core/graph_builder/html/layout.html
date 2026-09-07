@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Graph Builder v2 — LED Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+<!-- __CSS__ -->
+</style>
+</head>
+<body>
+<div class="gb-app gb-standalone">
+
+<!-- __SLOT_HEADER__ -->
+
+<!-- __SLOT_TABLE_VIEW__ -->
+
+<div class="gb-main">
+
+<!-- Sidebar -->
+<div class="gb-sidebar" id="sidebar">
+  <!-- __SLOT_STATSBAR__ -->
+  <!-- __SLOT_PANEL_SCALAR__ -->
+  <!-- __SLOT_PANEL_VECTOR__ -->
+  <!-- __SLOT_PANEL_CIE__ -->
+  <!-- __SLOT_PANEL_FACET__ -->
+  <!-- __SLOT_FILTERS__ -->
+</div><!-- /sidebar -->
+
+<!-- __SLOT_CANVAS__ -->
+
+</div><!-- /gb-main -->
+
+<!-- __SLOT_AXES_MODAL__ -->
+</div><!-- /gb-app -->
+
+<script>
+// ── Data injected by build.py ──────────────────────────────
+var DATA       = __data_json__;
+var DATA_FULL  = __data_full_json__;
+var WAFERS     = __wafers_json__;
+var SCALAR_NUM = __scalar_num_json__;
+var SCALAR_CAT = __scalar_cat_json__;
+var VECTORS    = __vector_json__;
+var LAMBDA_CS  = __lambda_colorscale__;
+
+// ── CIE constants ──────────────────────────────────────────
+<!-- __SLOT_CIE_CONSTANTS__ -->
+
+// ── JS modules (inlined by build.py) ───────────────────────
+<!-- __JS_CORE__ -->
+<!-- __JS_INIT__ -->
+<!-- __JS_FILTERS__ -->
+<!-- __JS_AXES_MODAL__ -->
+<!-- __JS_TABLE__ -->
+<!-- __JS_HELPERS__ -->
+<!-- __JS_SCALAR__ -->
+<!-- __JS_KDE2D__ -->
+<!-- __JS_VECTOR__ -->
+<!-- __JS_CIE__ -->
+<!-- __JS_FACET__ -->
+</script>
+</body>
+</html>

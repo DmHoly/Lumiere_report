@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lumiere-report-builder"
+version = "0.1.0"
+description = "Générateur de rapports HTML standalone (blocs Plotly, tables, KPIs, GraphBuilder) — extrait de Lumière Suite."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=1.5",
+    "numpy>=1.23",
+    "plotly>=5.0",
+    "scipy>=1.9",
+    "scikit-learn>=1.1",
+    "pillow>=9.0",
+]
+
+[project.optional-dependencies]
+vlc = ["psycopg2-binary"]
+crypto = ["cryptography"]
+dev = ["pytest", "seaborn", "tqdm"]
+
+[tool.setuptools.packages.find]
+include = ["report_builder*"]
+
+[tool.setuptools.package-data]
+report_builder = [
+    "core/graph_builder/css/*.css",
+    "core/graph_builder/html/**/*.html",
+    "core/graph_builder/js/**/*.js",
+    "core/graph_builder_v3/static/*.css",
+    "core/graph_builder_v3/static/*.js",
+    "core/graph_builder_v3/static/extensions/*.js",
+    "core/graph_builder_v3/*.js",
+]

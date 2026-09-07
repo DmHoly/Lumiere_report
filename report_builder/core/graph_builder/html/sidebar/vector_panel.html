@@ -1,0 +1,113 @@
+  <div id="panel-vector" style="display:none">
+
+    <div class="gb-section open" id="sec-vaxes">
+      <div class="gb-section-hdr" onclick="toggleSection('sec-vaxes')">
+        <svg viewBox="0 0 16 16" width="11" height="11"><path d="M2 14 L6 4 L10 9 L14 2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        Axes vectoriels
+        <svg class="chevron" viewBox="0 0 16 16" width="11" height="11" style="margin-left:auto"><path d="M3 5l5 5 5-5"/></svg>
+      </div>
+      <div class="gb-section-body">
+        <div class="gb-row">
+          <label class="gb-label">X <span class="gb-badge gb-badge-v">vectoriel</span></label>
+          <div class="gb-select-wrap"><select class="gb-select" id="v-x"></select></div>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Y <span class="gb-badge gb-badge-v">vectoriel</span></label>
+          <div class="gb-select-wrap"><select class="gb-select" id="v-y"><option value="">— même que X —</option></select></div>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Grouper par <span class="gb-badge gb-badge-s">scalaire</span></label>
+          <div class="gb-select-wrap"><select class="gb-select" id="v-grp"><option value="">— aucun —</option></select></div>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Colorer par <span class="gb-badge gb-badge-s">scalaire</span> (1 couleur/LED)</label>
+          <div class="gb-select-wrap"><select class="gb-select" id="v-col"><option value="">— auto —</option></select></div>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Max LEDs affichées</label>
+          <div class="gb-select-wrap">
+            <select class="gb-select" id="v-lim">
+              <option value="10">10</option><option value="20" selected>20</option>
+              <option value="50">50</option><option value="0">Toutes</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gb-section open" id="sec-vopts">
+      <div class="gb-section-hdr" onclick="toggleSection('sec-vopts')">
+        <svg viewBox="0 0 16 16" width="11" height="11"><circle cx="8" cy="8" r="2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg>
+        Options
+        <svg class="chevron" viewBox="0 0 16 16" width="11" height="11" style="margin-left:auto"><path d="M3 5l5 5 5-5"/></svg>
+      </div>
+      <div class="gb-section-body">
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Log X</span>
+          <button class="gb-toggle" id="tog-vlx" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Log Y</span>
+          <button class="gb-toggle" id="tog-vly" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Fill under</span>
+          <button class="gb-toggle" id="tog-fill" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Markers</span>
+          <button class="gb-toggle" id="tog-mks" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">⛰ Ridge plot (joy plot)</span>
+          <button class="gb-toggle" id="tog-ridge" onclick="this.classList.toggle('on');toggleRidgeOpts()"></button>
+        </div>
+        <!-- Ridge options (shown only when ridge is on) -->
+        <div id="ridge-opts" style="display:none;padding:6px 0 0;border-top:1px solid var(--border);margin-top:4px;">
+          <div class="gb-row">
+            <label class="gb-label">Offset entre courbes — <span id="ridge-off-val">auto</span></label>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <input type="range" class="gb-range" id="ridge-off" min="0" max="2" step="0.05" value="0"
+                oninput="updateRidgeOffLabel(this.value)" style="flex:1">
+            </div>
+          </div>
+          <div class="gb-row">
+            <label class="gb-label">Opacité fill</label>
+            <input type="range" class="gb-range" id="ridge-alpha" min="0.05" max="1" step="0.05" value="0.6"
+              oninput="">
+          </div>
+          <div class="gb-row">
+            <label class="gb-label">Ordonner les courbes par</label>
+            <div class="gb-select-wrap"><select class="gb-select" id="ridge-order">
+              <option value="index">Ordre LED (défaut)</option>
+              <option value="J">Niveau de courant J</option>
+              <option value="EQE">EQE max</option>
+              <option value="peak_lambda">λ dominant</option>
+            </select></div>
+          </div>
+          <div class="gb-row">
+            <label class="gb-label">Palette</label>
+            <div class="gb-select-wrap"><select class="gb-select" id="ridge-pal">
+              <option value="navy_gold">Navy → Gold (Aledia)</option>
+              <option value="blues">Blues</option>
+              <option value="viridis">Viridis</option>
+              <option value="plasma">Plasma</option>
+              <option value="spectral">Spectral</option>
+            </select></div>
+          </div>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Opacité — <span id="vop-val">0.8</span></label>
+          <input type="range" class="gb-range" id="v-op" min="0.1" max="1" step="0.05" value="0.8"
+            oninput="document.getElementById('vop-val').textContent=parseFloat(this.value).toFixed(2)">
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Titre</label>
+          <input class="gb-input" id="v-title" placeholder="Titre…">
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /panel-vector -->
+
+  <!-- CIE PANEL -->

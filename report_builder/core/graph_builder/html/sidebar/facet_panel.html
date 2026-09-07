@@ -1,0 +1,70 @@
+  <div id="panel-facet" style="display:none">
+    <div class="gb-section open" id="sec-facet">
+      <div class="gb-section-hdr" onclick="toggleSection('sec-facet')">
+        <svg viewBox="0 0 16 16" width="11" height="11"><rect x="1" y="1" width="6" height="6" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="1" width="6" height="6" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="9" width="6" height="6" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="6" height="6" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+        Configuration Facet
+        <svg class="chevron" viewBox="0 0 16 16" width="11" height="11" style="margin-left:auto"><path d="M3 5l5 5 5-5"/></svg>
+      </div>
+      <div class="gb-section-body">
+        <div class="gb-row">
+          <label class="gb-label">X <span class="gb-badge gb-badge-s">scalaire</span></label>
+          <div class="gb-select-wrap"><select class="gb-select" id="f-x"></select></div>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Y <span class="gb-badge gb-badge-s">scalaire</span></label>
+          <div class="gb-select-wrap"><select class="gb-select" id="f-y"></select></div>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Colonnes (col_wrap) <span class="gb-badge gb-badge-c">catégoriel</span></label>
+          <div class="gb-select-wrap"><select class="gb-select" id="f-col"><option value="">— aucune —</option></select></div>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Lignes (row_wrap) <span class="gb-badge gb-badge-c">catégoriel</span></label>
+          <div class="gb-select-wrap"><select class="gb-select" id="f-row"><option value="">— aucune —</option></select></div>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Couleur <span class="gb-badge gb-badge-c">catégoriel</span></label>
+          <div class="gb-select-wrap"><select class="gb-select" id="f-c"><option value="">— auto —</option></select></div>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Type de graphique</label>
+          <div class="gb-chart-grid" style="grid-template-columns:repeat(4,1fr)">
+            <div class="gb-ctype active" data-ftype="scatter" onclick="setFacetType(this)">
+              <svg viewBox="0 0 16 16" width="12" height="12"><circle cx="4" cy="12" r="1.5"/><circle cx="8" cy="7" r="1.5"/><circle cx="12" cy="4" r="1.5"/></svg>Scatter
+            </div>
+            <div class="gb-ctype" data-ftype="histogram" onclick="setFacetType(this)">
+              <svg viewBox="0 0 16 16" width="12" height="12"><rect x="1" y="5" width="4" height="10"/><rect x="6" y="2" width="4" height="13"/><rect x="11" y="7" width="4" height="8"/></svg>Histo
+            </div>
+            <div class="gb-ctype" data-ftype="box" onclick="setFacetType(this)">
+              <svg viewBox="0 0 16 16" width="12" height="12"><rect x="4" y="5" width="8" height="7" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="2" x2="8" y2="5" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="12" x2="8" y2="15" stroke="currentColor" stroke-width="1.5"/></svg>Box
+            </div>
+            <div class="gb-ctype" data-ftype="violin" onclick="setFacetType(this)">
+              <svg viewBox="0 0 16 16" width="12" height="12"><path d="M8 2c-2 0-3 2-3 5 0 1.5.5 2.5 1.5 3v1H5v2h6v-2H9.5v-1C10.5 9.5 11 8.5 11 7c0-3-1-5-3-5z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>Violin
+            </div>
+          </div>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Axes partagés (shared X)</span>
+          <button class="gb-toggle on" id="tog-fshx" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Axes partagés (shared Y)</span>
+          <button class="gb-toggle on" id="tog-fshy" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Log X</span>
+          <button class="gb-toggle" id="tog-flx" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="gb-toggle-row">
+          <span class="gb-toggle-lbl">Log Y</span>
+          <button class="gb-toggle" id="tog-fly" onclick="this.classList.toggle('on')"></button>
+        </div>
+        <div class="gb-row">
+          <label class="gb-label">Hauteur par ligne (px)</label>
+          <input class="gb-input" id="f-rowh" value="220" style="width:80px">
+        </div>
+      </div>
+    </div>
+  </div><!-- /panel-facet -->
+
+  <!-- Filters (shared) -->
