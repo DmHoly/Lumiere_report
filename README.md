@@ -1,14 +1,25 @@
 # Lumière Report
 
-Générateur de rapports HTML standalone : assemblez des blocs (charts Plotly, tables, KPIs, wafer maps, Graph Builder interactif…) en onglets ou en slides, et exportez un fichier HTML auto-contenu (zéro dépendance serveur).
+Générateur de rapports HTML **standalone** : assemblez des blocs (charts Plotly, tables, KPIs, wafer maps, Graph Builder interactif…) en onglets ou en slides, et exportez un fichier HTML auto-contenu — zéro dépendance serveur, zéro base de données.
 
-Ce dépôt est extrait de [lumiere-suite](https://github.com/DmHoly/lumiere-suite) (module `report_builder/`) pour évoluer de façon autonome.
+Ce dépôt est extrait de [lumiere-suite](https://github.com/DmHoly/lumiere-suite) (ex-module `report_builder/`) pour évoluer de façon autonome.
+
+## Sommaire
+
+- [Installation](#installation)
+- [Usage rapide](#usage-rapide)
+- [Concepts clés](#concepts-clés)
+- [Catalogue des blocs](#catalogue-des-blocs)
+- [Graph Builder V2 / V3](#graph-builder-v2--v3)
+- [Structure du dépôt](#structure-du-dépôt)
+- [Tests](#tests)
+- [Périmètre de ce dépôt](#périmètre-de-ce-dépôt)
 
 ## Installation
 
 ```bash
 pip install -r requirements.txt
-# ou, en tant que package :
+# ou, en tant que package installable :
 pip install -e .
 ```
 
@@ -28,7 +39,7 @@ from report_builder.core.mock_led_dataset import generate_mock_led_dataset
 df = generate_mock_led_dataset(n_wafers=3, points_per_wafer=200)
 
 report = ReportBuilder(title="Test", subtitle="Mock data")
-report.data.register("main", df)
+report.data.register("main", df)   # une seule sérialisation, quel que soit le nombre de blocs qui l'utilisent
 
 tab = Tab("Analyse")
 tab.add(Section("Vue d'ensemble"))
@@ -40,7 +51,70 @@ report.add(TabView([tab]))
 report.save("output/rapport.html")
 ```
 
-Voir `report_builder/CLAUDE.md` pour la documentation technique complète (architecture des blocs, DataStore, GraphBuilder V2/V3, conventions).
+## Concepts clés
+
+- **Block** — classe abstraite (`report_builder.core._helpers.Block`) : tout composant visuel implémente `render(store=None) -> str` et retourne un fragment HTML (jamais `<html>`/`<body>`).
+- **DataStore** — registre central des DataFrames d'un rapport (`report.data.register("main", df)`). Chaque dataset est sérialisé **une seule fois** dans le HTML final, quel que soit le nombre de blocs qui le consomment (pattern zéro-copie).
+- **DataMixin** — tout bloc consommant un DataFrame l'hérite ; accepte soit une clé du DataStore (`"main"`), soit un DataFrame direct passé en override local.
+- **Layout** — `Tab` / `TabView` (onglets) ou `Slide` / `SlideView` (slides), plus `Row` / `Col` / `Grid` pour la disposition.
+
+Documentation technique complète (architecture des blocs, DataStore, conventions GraphBuilder V2/V3) : [`report_builder/CLAUDE.md`](report_builder/CLAUDE.md).
+
+## Catalogue des blocs
+
+| Catégorie | Blocs |
+|---|---|
+| Primitives | `Section`, `Text`, `KPI`, `KPIRow`, `PlotlyChart`, `DataTable`, `PlotlyChartJSON` |
+| Charts | `ScatterLED`, `ScatterSummary`, `SummaryBoxPlots`, `ScatterPoint`, `ScatterDrillDown`, `DesignMatrixBlock`, `SpiderChart`, `CIEDiagram` |
+| Wafer | `WaferMaps`, `WaferComparator`, `BestWaferMapBlock`, `SEMWafermapBlock`, `SEM101WafermapBlock`, `EQELambdaBoxplot`, `WaferELCompareBlock`, `WaferCurveCompareBlock` |
+| Spectres | `PLSpectraBlock`, `LambdaShiftBlock` |
+| Stats | `StatAnalysis`, `AnomalyBlock` |
+| Tables | `RawDataTableBlock`, `LotSummaryTable`, `LotInfoCard` |
+| Images | `Imageviewer`, `ELMatrixBlock` |
+| Simulation / VLC | `SimExplorerBlock`, `SimMapBlock`, `VLCDesignBlock`, `VLCCompareBlock`, `CoreShellULEDBlock` |
+| Optique | `AngularFluxBlock` |
+| Divers | `KPISparkBlock`, `TrendlineKPICard`, `EasterEggs`, `LumiereTour`, `MergeStoreBlock` |
+
+Tous exposés depuis `report_builder.core` ou `report_builder.core.blocks`.
+
+## Graph Builder V2 / V3
+
+Deux moteurs d'exploration de données interactifs, réutilisables comme blocs de rapport ou en app standalone :
+
+- **GraphBuilderV2** (`graph_builder_block.py`) — stable, en production.
+- **GraphBuilderV3** (`graph_builder_v3/`) — expérimental, conservé en parallèle. Ses assets JS/CSS (`graph_builder_v3/static/`) sont une copie vendorisée du Graph Builder interactif de lumiere-suite, figée au moment de l'extraction de ce dépôt.
+
+Chaque builder expose `render(store=None)` (fragment embeddable dans un rapport) et `render_standalone()` (page HTML complète, export indépendant).
+
+```python
+from report_builder.core import GraphBuilderV2, GraphBuilderV3
+
+tab.add(GraphBuilderV2("main"))
+tab.add(GraphBuilderV3(data="main", exclude_cols=["Spectra", "WL"], height=700))
+```
+
+## Structure du dépôt
+
+```
+lumiere_report/
+├── report_builder/
+│   ├── core/
+│   │   ├── _helpers.py, _assets.py        # Block (ABC), JS/CSS embarqués
+│   │   ├── report_builder.py              # ReportBuilder — assembleur principal
+│   │   ├── report_builder_runner.py       # Exécution depuis config JSON
+│   │   ├── navigation.py, layout.py       # Tab/TabView/Slide, Row/Col/Grid
+│   │   ├── mock_led_dataset.py            # Générateur de données de test
+│   │   ├── graph_builder_block.py         # GraphBuilderV2
+│   │   ├── graph_builder/                 # Code source du builder V2
+│   │   ├── graph_builder_v3/              # GraphBuilderV3 + assets vendorisés
+│   │   └── blocks/                        # Catalogue des blocs (voir ci-dessus)
+│   ├── goniometre/                        # Indexation et analyse de mesures goniomètre (LIV, VLC)
+│   ├── test_blocks_contract.py            # Tests de contrat (79 tests)
+│   └── test_report_mock.py                # Rapport complet de bout en bout sur données mock
+├── pyproject.toml
+├── requirements.txt
+└── CLAUDE.md
+```
 
 ## Tests
 
@@ -53,4 +127,6 @@ python test_report_mock.py   # génère output/test_report_mock.html
 
 ## Périmètre de ce dépôt
 
-Ce dépôt contient le moteur de rendu autonome (`report_builder/core/`, `report_builder/goniometre/`) et sa suite de tests. Les scripts couplés à l'écosystème ETL de lumiere-suite (nodes Aledia, chargement de données spécifiques métier) restent dans le dépôt principal.
+Ce dépôt contient le moteur de rendu autonome (`report_builder/core/`, `report_builder/goniometre/`) et sa suite de tests. Les scripts couplés à l'écosystème ETL de lumiere-suite (nodes Aledia, chargement de données métier spécifiques : `QT_report.py`, `full_report_example.py`, `report_from_config.py`…) restent dans le dépôt principal, car ils dépendent de `etl.nodes.aledia_data`.
+
+lumiere-suite garde pour l'instant sa propre copie interne de `report_builder/` ; le faire dépendre de ce dépôt est une étape ultérieure, non réalisée ici.
