@@ -32,7 +32,9 @@ class ReportBuilderRunner:
 
     BLOCKS_WITHOUT_DATA = {
         "Section",
+        "Text",
         "KPI",
+        "KPIRow",
         "Tab",
         "TabView",
         "ReportBuilder",
@@ -41,6 +43,13 @@ class ReportBuilderRunner:
         'EasterEggs',
         "LumiereTour",
         "PlotlyChartJSON",
+        # Blocs sans DataMixin ou dont le paramètre de données n'est pas "data"
+        # (store_key, df_liv/df_f3db, ...) — l'auto-injection de data= échouerait sinon.
+        "EQELambdaBoxplot",
+        "LotInfoCard",
+        "CoreShellULEDBlock",
+        "MergeStoreBlock",
+        "VLCCompareBlock",
     }
 
     def __init__(
@@ -79,7 +88,7 @@ class ReportBuilderRunner:
 
     def _load_core(self):
         self._ensure_path()
-        import Core
+        from report_builder import core as Core
         importlib.reload(Core)
         return Core
 

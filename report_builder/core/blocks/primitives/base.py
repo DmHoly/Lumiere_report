@@ -2,7 +2,7 @@ from __future__ import annotations
 import json
 import html as _h
 import numpy as np
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from typing import Any
 import pandas as pd
 from ..._helpers import Block, _is_vector_col, _safe_json
@@ -127,6 +127,10 @@ class KPIRow(Block):
         self.kpis = kpis
     def render(self, store=None) -> str:
         return f'<div class="rb-kpi-row">{"".join(k._render_card() for k in self.kpis)}</div>'
+    def to_dict(self) -> dict:
+        # self.kpis contient des dataclasses KPI, non JSON-sérialisables telles
+        # quelles — le filtre générique de Block.to_dict() les ignorerait.
+        return {"type": "KPIRow", "params": {"kpis": [asdict(k) for k in self.kpis]}}
 
 
 class PlotlyChart(Block):
