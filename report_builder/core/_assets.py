@@ -61,7 +61,7 @@ _ALEDIA_LOGO_SVG = f"""
 <svg id="rb-header-logo"
      viewBox="-40 -40 887 420"
      xmlns="http://www.w3.org/2000/svg"
-     style="height:30px;width:auto;display:block;cursor:pointer;flex-shrink:0;color:#c8a84b;overflow:visible;"
+     style="height:21px;width:auto;display:block;cursor:pointer;flex-shrink:0;color:#c8a84b;overflow:visible;"
      role="img"
      aria-label="Aledia">
 
@@ -114,9 +114,9 @@ _CSS = """
   --fd:        'DM Sans', 'Helvetica Neue', Arial, sans-serif;
   --fb:        'DM Sans', 'Helvetica Neue', Arial, sans-serif;
   /* Hauteur du header + nav — référencées partout */
-  --hdr-h:     62px;
-  --sep-h:     10px;
-  --nav-h:     44px;
+  --hdr-h:     46px;
+  --sep-h:     4px;
+  --nav-h:     36px;
   --top-h:     calc(var(--hdr-h) + var(--sep-h) + var(--nav-h));
 }
 
@@ -152,9 +152,9 @@ body {
 .rb-header-brand-block {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding-right: 20px;
-  margin-right: 20px;
+  gap: 10px;
+  padding-right: 14px;
+  margin-right: 14px;
   flex-shrink: 0;
 }
 
@@ -166,7 +166,7 @@ body {
 /* Séparateur vertical interne brand-block */
 .rb-header-sep {
   width: 1px;
-  height: 34px;
+  height: 24px;
   background: rgba(255,255,255,.2);
   flex-shrink: 0;
   margin: 0;
@@ -237,9 +237,9 @@ body {
   border: 1px solid rgba(212,175,55,.45);
   border-radius: 50%;
   color: var(--gold);
-  font-size: 1rem;
-  width: 28px;
-  height: 28px;
+  font-size: .85rem;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
   line-height: 1;
   transition: color .2s, border-color .2s, background .2s;
@@ -345,10 +345,10 @@ body {
 .rb-body {
   max-width: 100%;
   margin: 0;
-  padding: 16px 28px 80px;
+  padding: 14px 24px 40px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 /* ══════════════════════════════════════════════════

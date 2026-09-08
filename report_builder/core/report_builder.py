@@ -211,6 +211,14 @@ class ReportBuilder:
     <span class="rb-header-title">{_h.escape(self.title)}{sub_h}</span>
     <button class="rb-header-info-btn" id="rb-info-btn" title="Contact &amp; support">&#9432;</button>
   </header>
+  <script>
+  (function(){{
+    // Libellé "LUMIÈRE / Report Engine" — affiché par défaut même sans bloc
+    // EasterEggs (qui gère uniquement la révélation du nom complet au clic/"why").
+    var el = document.querySelector('.rb-header-lumiere-full');
+    if (el) {{ var s = el.getAttribute('data-short'); if (s) el.innerHTML = s; }}
+  }})();
+  </script>
 
   <div id="rb-info-overlay" style="display:none;position:fixed;inset:0;
     background:rgba(10,12,18,.85);z-index:99980;align-items:center;
