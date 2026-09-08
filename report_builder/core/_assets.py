@@ -289,19 +289,42 @@ body {
   );
 }
 
-/* ── Nav / Tab bar ── */
-.rb-tabbar {
+/* ── Nav / Tab bar — scrollable sur petit écran quand les onglets débordent ── */
+.rb-tabbar-wrap {
   background: #060e22;
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  gap: 0;
   position: fixed;
   top: calc(var(--hdr-h) + var(--sep-h));
   left: 0; right: 0;
   z-index: 198;
   height: var(--nav-h);
 }
+.rb-tabbar {
+  background: #060e22;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.rb-tabbar::-webkit-scrollbar { display: none; }
+/* Dégradés de bord — signalent qu'il reste des onglets hors champ */
+.rb-tabbar-fade {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 26px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+.rb-tabbar-fade-l { left: 0;  background: linear-gradient(90deg,  #060e22, rgba(6,14,34,0)); }
+.rb-tabbar-fade-r { right: 0; background: linear-gradient(270deg, #060e22, rgba(6,14,34,0)); }
+.rb-tabbar-wrap.can-scroll-l .rb-tabbar-fade-l { opacity: 1; }
+.rb-tabbar-wrap.can-scroll-r .rb-tabbar-fade-r { opacity: 1; }
 .rb-tab-btn {
   font-family: var(--fb);
   font-size: 13px;

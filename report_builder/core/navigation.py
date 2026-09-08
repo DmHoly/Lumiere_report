@@ -90,17 +90,31 @@ class TabView(Block):
 
         glow_id = f"{vid}_glow"
         sep_id  = f"{vid}_sep"
+        bar_id  = f"{vid}_bar"
+        wrap_id = f"{vid}_wrap"
         switch_js = f"""<script>
 (function(){{
   var GLOW_W = 340;
-  function {vid}_moveGlow(btn) {{
+  function {vid}_activeBtn() {{
+    return document.querySelector("#{wrap_id} .rb-tab-btn.active");
+  }}
+  function {vid}_moveGlow() {{
     var glow = document.getElementById("{glow_id}");
     var sep  = document.getElementById("{sep_id}");
-    if (!glow || !sep) return;
+    var btn  = {vid}_activeBtn();
+    if (!glow || !sep || !btn) return;
     var sepRect = sep.getBoundingClientRect();
     var btnRect = btn.getBoundingClientRect();
     var center  = btnRect.left - sepRect.left + btnRect.width / 2;
     glow.style.left = (center - GLOW_W / 2) + "px";
+  }}
+  /* Dégradés de bord : signalent des onglets hors champ sur petit écran */
+  function {vid}_updateFades() {{
+    var bar  = document.getElementById("{bar_id}");
+    var wrap = document.getElementById("{wrap_id}");
+    if (!bar || !wrap) return;
+    wrap.classList.toggle("can-scroll-l", bar.scrollLeft > 2);
+    wrap.classList.toggle("can-scroll-r", bar.scrollLeft < bar.scrollWidth - bar.clientWidth - 2);
   }}
   window.{vid}_show = function(idx) {{
     var n = {len(self._tabs)};
@@ -109,29 +123,53 @@ class TabView(Block):
       var btn = document.getElementById("{vid}_btn_"+i);
       btn.classList.toggle("active", i===idx);
     }}
-    {vid}_moveGlow(document.getElementById("{vid}_btn_"+idx));
+    var activeBtn = document.getElementById("{vid}_btn_"+idx);
+    if (activeBtn && activeBtn.scrollIntoView) {{
+      activeBtn.scrollIntoView({{block: "nearest", inline: "nearest"}});
+    }}
+    {vid}_moveGlow();
     requestAnimationFrame(function() {{
       window.dispatchEvent(new Event('resize'));
       var panel = document.getElementById("{vid}_panel_"+idx);
       panel.querySelectorAll("[id]").forEach(function(el){{if(el._fullLayout)Plotly.Plots.resize(el);}});
     }});
   }};
-  /* init glow on first active tab */
   window.addEventListener("load", function() {{
-    var btn = document.getElementById("{vid}_btn_0");
-    if (btn) {vid}_moveGlow(btn);
+    {vid}_moveGlow();
+    {vid}_updateFades();
   }});
   window.addEventListener("resize", function() {{
-    var active = document.querySelector("#{vid}_btn_0.active") ||
-                 Array.from(document.querySelectorAll('[id^="{vid}_btn_"]')).find(function(b){{return b.classList.contains("active");}});
-    if (active) {vid}_moveGlow(active);
+    {vid}_moveGlow();
+    {vid}_updateFades();
   }});
+  var bar = document.getElementById("{bar_id}");
+  if (bar) {{
+    /* le glow et les dégradés suivent le scroll manuel de la barre */
+    bar.addEventListener("scroll", function() {{
+      {vid}_moveGlow();
+      {vid}_updateFades();
+    }}, {{passive: true}});
+    /* molette verticale -> scroll horizontal quand la barre déborde (souris/trackpad) */
+    bar.addEventListener("wheel", function(e) {{
+      if (bar.scrollWidth <= bar.clientWidth) return;
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {{
+        bar.scrollLeft += e.deltaY;
+        e.preventDefault();
+      }}
+    }}, {{passive: false}});
+  }}
 }})();
 </script>"""
         separator = (f'<div class="rb-nav-separator" id="{sep_id}">'
                      f'<div class="rb-sep-glow" id="{glow_id}"></div></div>')
-        return (separator
-                + '<div class="rb-tabbar">' + "".join(btns) + '</div>\n'
+        tabbar = (
+            f'<div class="rb-tabbar-wrap" id="{wrap_id}">'
+            f'<div class="rb-tabbar" id="{bar_id}">' + "".join(btns) + '</div>'
+            f'<div class="rb-tabbar-fade rb-tabbar-fade-l"></div>'
+            f'<div class="rb-tabbar-fade rb-tabbar-fade-r"></div>'
+            f'</div>\n'
+        )
+        return (separator + tabbar
                 + "\n".join(panels) + switch_js)
 
 
