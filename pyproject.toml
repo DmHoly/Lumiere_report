@@ -20,10 +20,17 @@ dependencies = [
 [project.optional-dependencies]
 vlc = ["psycopg2-binary"]
 crypto = ["cryptography"]
-dev = ["pytest", "seaborn", "tqdm"]
+dev = ["pytest", "seaborn", "tqdm", "httpx"]
+app = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "python-multipart>=0.0.9",
+    "pyarrow>=14.0",
+    "openpyxl>=3.1",
+]
 
 [tool.setuptools.packages.find]
-include = ["report_builder*"]
+include = ["report_builder*", "app*"]
 
 [tool.setuptools.package-data]
 report_builder = [
@@ -34,4 +41,9 @@ report_builder = [
     "core/graph_builder_v3/static/*.js",
     "core/graph_builder_v3/static/extensions/*.js",
     "core/graph_builder_v3/*.js",
+]
+app = [
+    "static/*.html",
+    "static/css/*.css",
+    "static/js/*.js",
 ]

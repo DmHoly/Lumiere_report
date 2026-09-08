@@ -5,9 +5,17 @@ scipy>=1.9
 scikit-learn>=1.1
 pillow>=9.0
 
+# App builder (API + front-end) — app/
+fastapi>=0.110
+uvicorn[standard]>=0.27
+python-multipart>=0.0.9   # upload de fichiers (POST /api/datasets)
+pyarrow>=14.0              # cache dataset en parquet (dataset_store)
+openpyxl>=3.1               # upload de fichiers .xlsx
+
 # Optionnels — utilisés uniquement par certains blocs
 # psycopg2-binary   # VLCDesignBlock / vlc_data_loader — requête base GOZER
 # cryptography      # report_builder_runner — chiffrement optionnel des snapshots
 
 # Développement / tests
 pytest>=7.0
+httpx>=0.27                 # requis par fastapi.testclient

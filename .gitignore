@@ -10,3 +10,11 @@ venv/
 # Rapports générés par les scripts de test
 report_builder/output/
 output/
+
+# Stockage runtime de l'app builder (datasets uploadés, configs, exports)
+app/data/datasets/*
+!app/data/datasets/.gitkeep
+app/data/configs/*
+!app/data/configs/.gitkeep
+app/data/output/*
+!app/data/output/.gitkeep

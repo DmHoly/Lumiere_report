@@ -19,6 +19,44 @@ except ImportError:
     _HAS_CRYPTO = False
 
 
+def build_block(block_type: str, params_raw: dict, Core, main_key: str = "main"):
+    """
+    Reconstruit une instance de bloc depuis (type, params) tels que sérialisés
+    par Block.to_dict() / ReportBuilder.to_config().
+
+    Fonction indépendante de ReportBuilderRunner pour être réutilisable par
+    d'autres compilateurs de config (ex: l'app builder) sans dupliquer les
+    cas particuliers (KPIRow, SummaryBoxPlots) ni la règle d'auto-injection
+    du paramètre data=.
+
+    Lève AttributeError si block_type est inconnu dans Core, et toute
+    exception levée par le constructeur du bloc (paramètres invalides).
+    """
+    cls = getattr(Core, block_type, None)
+    if cls is None:
+        raise AttributeError(f"Bloc inconnu : {block_type!r}")
+
+    params = ReportBuilderRunner._fix_text_encoding(dict(params_raw or {}))
+
+    if block_type == "KPIRow" and "kpis" in params:
+        KPI = getattr(Core, "KPI")
+        params["kpis"] = [
+            KPI(**k) if isinstance(k, dict) else k
+            for k in params["kpis"]
+        ]
+
+    if block_type == "SummaryBoxPlots" and "metrics" in params:
+        params["metrics"] = {
+            k: tuple(v) if isinstance(v, list) else v
+            for k, v in params["metrics"].items()
+        }
+
+    if block_type not in ReportBuilderRunner.BLOCKS_WITHOUT_DATA and "data" not in params:
+        params["data"] = main_key
+
+    return cls(**params)
+
+
 class ReportBuilderRunner:
     """
     Exécute la génération d'un rapport HTML à partir d'un DataFrame
@@ -224,24 +262,6 @@ class ReportBuilderRunner:
         self.load_dataframe(df, key="main")
         return df
 
-    def _deserialize_params(self, block_type: str, params: dict, Core) -> dict:
-        params = self._fix_text_encoding(dict(params or {}))
-
-        if block_type == "KPIRow" and "kpis" in params:
-            KPI = getattr(Core, "KPI")
-            params["kpis"] = [
-                KPI(**k) if isinstance(k, dict) else k
-                for k in params["kpis"]
-            ]
-
-        if block_type == "SummaryBoxPlots" and "metrics" in params:
-            params["metrics"] = {
-                k: tuple(v) if isinstance(v, list) else v
-                for k, v in params["metrics"].items()
-            }
-
-        return params
-
     def generate(
         self,
         config: dict | str,
@@ -329,22 +349,8 @@ class ReportBuilderRunner:
                     skipped.append("Bloc sans type")
                     continue
 
-                cls = getattr(Core, block_type, None)
-
-                if cls is None:
-                    skipped.append(block_type)
-                    continue
-
                 try:
-                    params = self._deserialize_params(block_type, params_raw, Core)
-
-                    if (
-                        block_type not in self.BLOCKS_WITHOUT_DATA
-                        and "data" not in params
-                    ):
-                        params["data"] = self._main_key
-
-                    tab.add(cls(**params))
+                    tab.add(build_block(block_type, params_raw, Core, self._main_key))
                     block_types_used.append(block_type)
 
                 except Exception as exc:

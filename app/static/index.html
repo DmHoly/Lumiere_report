@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LUMIÈRE — Report Builder</title>
+  <link rel="stylesheet" href="/static/css/builder.css">
+</head>
+<body>
+
+  <header class="bld-header">
+    <div class="bld-brand">
+      <span class="bld-brand-name">LUMIÈRE</span>
+      <span class="bld-brand-sub">Report Builder</span>
+    </div>
+
+    <div class="bld-meta-fields">
+      <input id="f-title" class="bld-input bld-meta-title" type="text" placeholder="Titre du rapport" value="Rapport">
+      <input id="f-subtitle" class="bld-input" type="text" placeholder="Sous-titre">
+      <input id="f-author" class="bld-input" type="text" placeholder="Auteur" style="width:120px">
+    </div>
+
+    <div class="bld-dataset-picker">
+      <select id="f-dataset" class="bld-select">
+        <option value="">— Choisir un dataset —</option>
+      </select>
+      <button id="btn-upload" class="bld-btn bld-btn-ghost" title="Uploader un fichier (CSV / Parquet / Excel)">⬆ Upload</button>
+      <input id="f-upload-file" type="file" accept=".csv,.parquet,.xlsx,.xls" hidden>
+    </div>
+
+    <div class="bld-actions">
+      <button id="btn-load"    class="bld-btn bld-btn-ghost">Ouvrir…</button>
+      <button id="btn-save"    class="bld-btn bld-btn-ghost">Enregistrer</button>
+      <button id="btn-preview" class="bld-btn bld-btn-gold">▶ Aperçu</button>
+      <button id="btn-export"  class="bld-btn bld-btn-gold">⬇ Export HTML</button>
+    </div>
+  </header>
+
+  <div class="bld-body">
+
+    <nav class="bld-tabs" id="page-tabs"></nav>
+
+    <main class="bld-canvas" id="canvas"></main>
+
+  </div>
+
+  <!-- ── Modal : bibliothèque de blocs ────────────────────────────────── -->
+  <div id="modal-library" class="bld-modal-overlay" hidden>
+    <div class="bld-modal bld-modal-lg">
+      <div class="bld-modal-head">
+        <span>Bibliothèque de blocs</span>
+        <button class="bld-modal-close" data-close-modal>✕</button>
+      </div>
+      <div class="bld-modal-body">
+        <input id="lib-search" class="bld-input" type="text" placeholder="Rechercher un bloc…" style="width:100%;margin-bottom:12px">
+        <div id="lib-list" class="bld-lib-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Modal : enregistrer ─────────────────────────────────────────── -->
+  <div id="modal-save" class="bld-modal-overlay" hidden>
+    <div class="bld-modal">
+      <div class="bld-modal-head">
+        <span>Enregistrer le rapport</span>
+        <button class="bld-modal-close" data-close-modal>✕</button>
+      </div>
+      <div class="bld-modal-body">
+        <label class="bld-label">Nom</label>
+        <input id="save-name" class="bld-input" type="text" style="width:100%" placeholder="Ex: Rapport Lot QRO07">
+        <div class="bld-modal-actions">
+          <button id="save-confirm" class="bld-btn bld-btn-gold">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Modal : ouvrir ──────────────────────────────────────────────── -->
+  <div id="modal-open" class="bld-modal-overlay" hidden>
+    <div class="bld-modal bld-modal-lg">
+      <div class="bld-modal-head">
+        <span>Ouvrir un rapport enregistré</span>
+        <button class="bld-modal-close" data-close-modal>✕</button>
+      </div>
+      <div class="bld-modal-body">
+        <div id="open-list" class="bld-open-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Toast / erreurs ─────────────────────────────────────────────── -->
+  <div id="toast" class="bld-toast" hidden></div>
+
+  <script src="/static/js/builder.js"></script>
+</body>
+</html>

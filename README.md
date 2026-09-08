@@ -8,6 +8,7 @@ Ce dépôt est extrait de [lumiere-suite](https://github.com/DmHoly/lumiere-suit
 
 - [Installation](#installation)
 - [Usage rapide](#usage-rapide)
+- [Report Builder — API + interface visuelle](#report-builder--api--interface-visuelle)
 - [Concepts clés](#concepts-clés)
 - [Catalogue des blocs](#catalogue-des-blocs)
 - [Graph Builder V2 / V3](#graph-builder-v2--v3)
@@ -50,6 +51,23 @@ tab.add(GraphBuilderV3(data="main", height=700))
 report.add(TabView([tab]))
 report.save("output/rapport.html")
 ```
+
+## Report Builder — API + interface visuelle
+
+Au-dessus de la librairie, `app/` expose une API FastAPI et une interface web pour assembler un rapport visuellement, sans écrire de Python :
+
+```bash
+uvicorn app.main:app --reload --port 8420
+```
+
+Puis ouvrir `http://localhost:8420/` :
+
+1. **Uploader ou choisir un dataset** (CSV / Parquet / Excel) dans l'en-tête.
+2. **Ajouter des onglets** (= pages du rapport), chacun en mode **Basique** (pile verticale de blocs) ou **Grille** (lignes de 1 à 4 colonnes).
+3. **Piocher des blocs dans la bibliothèque** — auto-générée par introspection du catalogue `report_builder.core` (paramètres typés en formulaire : colonnes du dataset, nombres, booléens, listes de KPI…).
+4. **Aperçu** en direct (rendu réel via le moteur `report_builder`), **Enregistrer** la config pour la rappeler plus tard, **Exporter** le HTML final.
+
+L'API REST sous-jacente (`/api/datasets`, `/api/blocks`, `/api/reports`) est utilisable indépendamment de l'UI — voir les docstrings dans `app/routers/` et `app/report_compiler.py` (schéma de config détaillé).
 
 ## Concepts clés
 
@@ -111,6 +129,12 @@ lumiere_report/
 │   ├── goniometre/                        # Indexation et analyse de mesures goniomètre (LIV, VLC)
 │   ├── test_blocks_contract.py            # Tests de contrat (79 tests)
 │   └── test_report_mock.py                # Rapport complet de bout en bout sur données mock
+├── app/                                    # API + UI du Report Builder
+│   ├── main.py, routers/                  # FastAPI (datasets, blocks, reports)
+│   ├── block_registry.py                  # bibliothèque de blocs par introspection
+│   ├── dataset_store.py, config_store.py  # persistance datasets / configs (JSON + parquet)
+│   ├── report_compiler.py                 # config builder -> ReportBuilder -> HTML
+│   └── static/                            # front-end vanilla JS
 ├── pyproject.toml
 ├── requirements.txt
 └── CLAUDE.md
