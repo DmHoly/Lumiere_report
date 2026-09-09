@@ -60,6 +60,8 @@ Au-dessus de la librairie, `app/` expose une API FastAPI et une interface web po
 uvicorn app.main:app --reload --port 8420
 ```
 
+**Sous Windows**, double-clique simplement sur `start_report_builder.bat` à la racine du dépôt : il crée l'environnement virtuel au premier lancement, installe les dépendances, démarre le serveur et ouvre le navigateur automatiquement sur `http://127.0.0.1:8420/`. Laisser la fenêtre ouverte pendant l'utilisation ; la fermer (ou Ctrl+C) arrête le serveur.
+
 Puis ouvrir `http://localhost:8420/` :
 
 1. **Uploader ou choisir un dataset** (CSV / Parquet / Excel) dans l'en-tête.

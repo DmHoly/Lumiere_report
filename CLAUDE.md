@@ -30,6 +30,8 @@ lumiere_report/
 │   ├── routers/                # datasets.py, blocks.py, reports.py
 │   ├── static/                 # front-end vanilla JS (index.html, css/, js/)
 │   └── data/                   # stockage runtime, gitignored (sauf .gitkeep)
+├── start_report_builder.bat    # lanceur Windows (venv + deps + serveur + navigateur)
+├── _open_browser.bat           # helper interne, appelé par start_report_builder.bat
 ├── pyproject.toml
 ├── requirements.txt
 └── README.md
@@ -50,6 +52,8 @@ cd report_builder && python test_report_mock.py   # génère output/test_report_
 uvicorn app.main:app --reload --port 8420
 # UI  : http://localhost:8420/
 # API : http://localhost:8420/api/...
+
+# Windows : double-clic sur start_report_builder.bat (venv + deps + serveur + navigateur)
 ```
 
 ## Origine et périmètre
